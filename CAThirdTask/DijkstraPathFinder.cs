@@ -7,7 +7,7 @@ namespace CAThirdTask
     {
         public List<Node> GetShortestPath(Graph graph, Node start, Node finish)
         {
-            var notVisited = graph.Nodes.ToList();
+            var notOpened = graph.Nodes.ToHashSet();
             var track = new Dictionary<Node, DijkstraData>();
             track[start] = new DijkstraData { Price = 0, Previous = null };
 
@@ -15,7 +15,7 @@ namespace CAThirdTask
             {
                 Node toOpen = null;
                 var bestPrice = double.PositiveInfinity;
-                foreach (var e in notVisited)
+                foreach (var e in notOpened)
                     if (track.ContainsKey(e) && track[e].Price < bestPrice)
                     {
                         bestPrice = track[e].Price;
@@ -25,7 +25,7 @@ namespace CAThirdTask
                 if (toOpen is null) return null;
                 if (toOpen.Equals(finish)) break;
 
-                foreach (var incidentEdge in toOpen.IncidentEdges.Where(z => z.From.Equals(toOpen)))
+                foreach (var incidentEdge in toOpen.IncidentEdges.Where(edge => edge.From.Equals(toOpen)))
                 {
                     var currentPrice = track[toOpen].Price + incidentEdge.Weight;
                     var nextNode = incidentEdge.GetOtherNode(toOpen);
@@ -33,12 +33,12 @@ namespace CAThirdTask
                         track[nextNode] = new DijkstraData { Previous = toOpen, Price = currentPrice };
                 }
 
-                notVisited.Remove(toOpen);
+                notOpened.Remove(toOpen);
             }
 
             var result = new List<Node> { finish };
 
-            while (finish != null) result.Add(finish = track[finish].Previous);
+            while (track[finish].Previous != null) result.Add(finish = track[finish].Previous);
 
             result.Reverse();
 

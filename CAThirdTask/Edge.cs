@@ -15,6 +15,8 @@ namespace CAThirdTask
             Weight = weight;
         }
 
+        public override string ToString() => $"({From}, {To})";
+
         public bool IsIncident(Node node) => From.Equals(node) || To.Equals(node);
 
         public Node GetOtherNode(Node node)

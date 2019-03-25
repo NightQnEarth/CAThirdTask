@@ -18,12 +18,12 @@ namespace CAThirdTask
 
         public static string ResultGenerate(List<Node> path, Graph graph)
         {
-            var pathWeight = path?.Where((node, i) => i < path.Count)
+            var pathWeight = path?.Where((node, i) => i < path.Count - 1)
                                  .Select((node, i) => graph[node, path[i + 1]].Weight)
                                  .Aggregate(1, (accumulate, weight) => accumulate * weight);
             return path is null
                 ? "N"
-                : string.Join(Environment.NewLine, "Y", string.Join(Environment.NewLine, path), pathWeight);
+                : string.Join(Environment.NewLine, "Y", string.Join(" ", path), pathWeight);
         }
 
         public static (Graph, Node start, Node finish) GetInputData(Func<string> lineReader)
