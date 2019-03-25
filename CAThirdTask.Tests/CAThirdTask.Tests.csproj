@@ -46,6 +46,12 @@
         <Compile Include="Tests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\CAThirdTask\CAThirdTask.csproj">
+        <Project>{cd685368-daf2-478c-90bb-2f0c8d81627f}</Project>
+        <Name>CAThirdTask</Name>
+      </ProjectReference>
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
