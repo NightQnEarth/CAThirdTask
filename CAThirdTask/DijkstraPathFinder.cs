@@ -7,42 +7,43 @@ namespace CAThirdTask
     {
         public List<Node> GetShortestPath(Graph graph, Node start, Node finish)
         {
-            var notOpened = graph.Nodes.ToHashSet();
+            var notOpenedNodes = graph.Nodes.ToList();
             var track = new Dictionary<Node, DijkstraData>();
-            track[start] = new DijkstraData { Price = 0, Previous = null };
+            track[start] = new DijkstraData { Price = 1, Previous = null };
 
             while (true)
             {
-                Node toOpen = null;
+                Node toOpenNode = null;
                 var bestPrice = double.PositiveInfinity;
-                foreach (var e in notOpened)
-                    if (track.ContainsKey(e) && track[e].Price < bestPrice)
+                foreach (var node in notOpenedNodes)
+                    if (track.ContainsKey(node) && track[node].Price < bestPrice)
                     {
-                        bestPrice = track[e].Price;
-                        toOpen = e;
+                        bestPrice = track[node].Price;
+                        toOpenNode = node;
                     }
 
-                if (toOpen is null) return null;
-                if (toOpen.Equals(finish)) break;
+                if (toOpenNode is null) return null;
+                if (toOpenNode.Equals(finish)) break;
 
-                foreach (var incidentEdge in toOpen.IncidentEdges.Where(edge => edge.From.Equals(toOpen)))
+                foreach (var incidentEdge in toOpenNode.IncidentEdges.Where(edge => edge.From.Equals(toOpenNode)))
                 {
-                    var currentPrice = track[toOpen].Price + incidentEdge.Weight;
-                    var nextNode = incidentEdge.GetOtherNode(toOpen);
+                    var currentPrice = track[toOpenNode].Price * incidentEdge.Weight;
+                    var nextNode = incidentEdge.GetOtherNode(toOpenNode);
                     if (!track.ContainsKey(nextNode) || track[nextNode].Price > currentPrice)
-                        track[nextNode] = new DijkstraData { Previous = toOpen, Price = currentPrice };
+                        track[nextNode] = new DijkstraData { Previous = toOpenNode, Price = currentPrice };
                 }
 
-                notOpened.Remove(toOpen);
+                notOpenedNodes.Remove(toOpenNode);
             }
 
             var result = new List<Node> { finish };
 
-            while (track[finish].Previous != null) result.Add(finish = track[finish].Previous);
+            while (track[finish].Previous != null && result.Count < graph.NodesCount)
+                result.Add(finish = track[finish].Previous);
 
             result.Reverse();
 
-            return result;
+            return result.Distinct().ToList();
         }
     }
 }
