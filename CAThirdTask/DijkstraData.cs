@@ -1,10 +1,10 @@
 namespace CAThirdTask
 {
-    public class DijkstraData
+    public struct DijkstraData
     {
-        public Node Previous;
-        public double Price;
+        public double Price { get; set; }
+        public Node Previous { get; set; }
 
-        public override string ToString() => $"Previous: {Previous} Price: {Price}";
+        public override string ToString() => $"Price: {Price} Previous: {Previous} ";
     }
 }

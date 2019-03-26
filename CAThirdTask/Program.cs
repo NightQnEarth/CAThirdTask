@@ -10,8 +10,8 @@ namespace CAThirdTask
         public static void Main()
         {
             var pathfinder = new DijkstraPathFinder();
-            var (graph, start, finish) = GetInputData(Console.ReadLine);
-            var resultPath = pathfinder.GetShortestPath(graph, start, finish);
+            var (graph, source, target) = GetInputData(Console.ReadLine);
+            var resultPath = pathfinder.GetShortestPath(graph, source, target);
 
             Console.Write(ResultGenerate(resultPath, graph));
         }
@@ -28,28 +28,28 @@ namespace CAThirdTask
                 : string.Join(Environment.NewLine, "Y", string.Join(" ", path), pathWeight);
         }
 
-        public static (Graph, Node start, Node finish) GetInputData(Func<string> lineReader)
+        public static (Graph, Node source, Node target) GetInputData(Func<string> lineReader)
         {
             var nodesCount = int.Parse(lineReader().Trim());
             var graph = new Graph(nodesCount);
 
             for (int nodeNumber = 0; nodeNumber < nodesCount; nodeNumber++)
             {
-                var edgeWeightsArray = ReadLineToEdgeWeightsArray();
-                for (int otherNodeNumber = 0; otherNodeNumber < edgeWeightsArray.Length; otherNodeNumber++)
-                    if (edgeWeightsArray[otherNodeNumber] != short.MaxValue && otherNodeNumber != nodeNumber)
-                        graph[nodeNumber].MakeAdjacent(graph[otherNodeNumber], edgeWeightsArray[otherNodeNumber]);
+                var arrowWeightsArray = ReadLineToArrowWeightsArray();
+                for (int otherNodeNumber = 0; otherNodeNumber < arrowWeightsArray.Length; otherNodeNumber++)
+                    if (arrowWeightsArray[otherNodeNumber] != short.MaxValue && otherNodeNumber != nodeNumber)
+                        graph[nodeNumber].ConnectNodes(graph[otherNodeNumber], arrowWeightsArray[otherNodeNumber]);
             }
 
-            var start = new Node(int.Parse(lineReader().Trim()));
-            var finish = new Node(int.Parse(lineReader().Trim()));
+            var source = new Node(int.Parse(lineReader().Trim()));
+            var target = new Node(int.Parse(lineReader().Trim()));
 
-            return (graph, start, finish);
+            return (graph, source, target);
 
-            int[] ReadLineToEdgeWeightsArray() => Regex.Split(lineReader(), @"\W+")
-                                                       .Where(str => str != string.Empty)
-                                                       .Select(int.Parse)
-                                                       .ToArray();
+            int[] ReadLineToArrowWeightsArray() => Regex.Split(lineReader(), @"\W+")
+                                                        .Where(str => str != string.Empty)
+                                                        .Select(int.Parse)
+                                                        .ToArray();
         }
     }
 }

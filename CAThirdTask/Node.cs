@@ -5,23 +5,23 @@ namespace CAThirdTask
 {
     public class Node
     {
-        public readonly int Number;
-        private readonly List<Edge> incidentsEdges = new List<Edge>();
+        private readonly int number;
+        private readonly List<Arrow> incidentsArrows = new List<Arrow>();
 
-        public Node(int nodeNumber) => Number = nodeNumber;
+        public Node(int nodeNumber) => number = nodeNumber;
 
-        public IEnumerable<Edge> IncidentEdges => incidentsEdges.Select(edge => edge);
+        public IEnumerable<Arrow> IncidentArrows => incidentsArrows.Select(arrow => arrow);
 
-        public void MakeAdjacent(Node to, int edgeWeight)
+        public void ConnectNodes(Node head, int arrowWeight)
         {
-            incidentsEdges.Add(new Edge(this, to, edgeWeight));
-            to.incidentsEdges.Add(incidentsEdges.Last());
+            incidentsArrows.Add(new Arrow(this, head, arrowWeight));
+            head.incidentsArrows.Add(incidentsArrows.Last());
         }
 
-        public override bool Equals(object obj) => obj is Node node && node.Number == Number;
+        public override bool Equals(object obj) => obj is Node node && node.number == number;
 
-        public override int GetHashCode() => Number;
+        public override int GetHashCode() => number;
 
-        public override string ToString() => Number.ToString();
+        public override string ToString() => number.ToString();
     }
 }

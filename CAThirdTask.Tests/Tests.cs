@@ -32,8 +32,8 @@ namespace CAThirdTask.Tests
             {
                 using (var reader = new StreamReader(tempFileName))
                 {
-                    var (graph, start, finish) = Program.GetInputData(reader.ReadLine);
-                    var resultPath = pathFinder.GetShortestPath(graph, start, finish);
+                    var (graph, source, target) = Program.GetInputData(reader.ReadLine);
+                    var resultPath = pathFinder.GetShortestPath(graph, source, target);
                     return Program.ResultGenerate(resultPath, graph);
                 }
             }

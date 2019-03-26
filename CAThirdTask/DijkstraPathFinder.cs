@@ -5,11 +5,13 @@ namespace CAThirdTask
 {
     public class DijkstraPathFinder
     {
-        public List<Node> GetShortestPath(Graph graph, Node start, Node finish)
+        public List<Node> GetShortestPath(Graph graph, Node source, Node target)
         {
             var notOpenedNodes = graph.Nodes.ToList();
-            var track = new Dictionary<Node, DijkstraData>();
-            track[start] = new DijkstraData { Price = 1, Previous = null };
+            var track = new Dictionary<Node, DijkstraData>
+            {
+                [source] = new DijkstraData { Price = 1, Previous = null }
+            };
 
             while (true)
             {
@@ -23,23 +25,23 @@ namespace CAThirdTask
                     }
 
                 if (toOpenNode is null) return null;
-                if (toOpenNode.Equals(finish)) break;
+                if (toOpenNode.Equals(target)) break;
 
-                foreach (var incidentEdge in toOpenNode.IncidentEdges.Where(edge => edge.From.Equals(toOpenNode)))
+                foreach (var incidentArrow in toOpenNode.IncidentArrows.Where(arrow => arrow.Tail.Equals(toOpenNode)))
                 {
-                    var currentPrice = track[toOpenNode].Price * incidentEdge.Weight;
-                    var nextNode = incidentEdge.GetOtherNode(toOpenNode);
+                    var currentPrice = track[toOpenNode].Price * incidentArrow.Weight;
+                    var nextNode = incidentArrow.GetOtherNode(toOpenNode);
                     if (!track.ContainsKey(nextNode) || track[nextNode].Price > currentPrice)
-                        track[nextNode] = new DijkstraData { Previous = toOpenNode, Price = currentPrice };
+                        track[nextNode] = new DijkstraData { Price = currentPrice, Previous = toOpenNode };
                 }
 
                 notOpenedNodes.Remove(toOpenNode);
             }
 
-            var result = new List<Node> { finish };
+            var result = new List<Node> { target };
 
-            while (track[finish].Previous != null && result.Count < graph.NodesCount)
-                result.Add(finish = track[finish].Previous);
+            while (track[target].Previous != null && result.Count < graph.NodesCount)
+                result.Add(target = track[target].Previous);
 
             result.Reverse();
 

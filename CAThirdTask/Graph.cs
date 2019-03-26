@@ -17,8 +17,7 @@ namespace CAThirdTask
 
         public Node this[int nodeNumber] => nodes[nodeNumber];
 
-        public Edge this[Node from, Node to] =>
-            nodes.First(node => node.Equals(from)).IncidentEdges
-                 .First(edge => edge.From.Equals(from) && edge.To.Equals(to));
+        public Arrow this[Node tail, Node head] =>
+            tail.IncidentArrows.First(arrow => arrow.Tail.Equals(tail) && arrow.Head.Equals(head));
     }
 }
