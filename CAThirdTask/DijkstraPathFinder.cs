@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace CAThirdTask
 {
-    public class DijkstraPathFinder
+    public static class DijkstraPathFinder
     {
-        public List<Node> GetShortestPath(Graph graph, Node source, Node target)
+        public static List<Node> GetShortestPath(Graph graph, Node source, Node target)
         {
             var notOpenedNodes = graph.Nodes.ToList();
             var track = new Dictionary<Node, DijkstraData>

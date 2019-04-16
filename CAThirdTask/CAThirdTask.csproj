@@ -39,6 +39,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="DataParser.cs" />
         <Compile Include="DijkstraData.cs" />
         <Compile Include="DijkstraPathFinder.cs" />
         <Compile Include="Arrow.cs" />

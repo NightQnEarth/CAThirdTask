@@ -9,9 +9,7 @@ namespace CAThirdTask.Tests
     {
         private const string ExpectedNegativeResult = "N";
 
-        private readonly DijkstraPathFinder pathFinder = new DijkstraPathFinder();
-
-        private string GetActualResult(string inputLines)
+        private static string GetActualResult(string inputLines)
         {
             var tempFileName = Path.GetTempFileName();
 
@@ -32,9 +30,9 @@ namespace CAThirdTask.Tests
             {
                 using (var reader = new StreamReader(tempFileName))
                 {
-                    var (graph, source, target) = Program.GetInputData(reader.ReadLine);
-                    var resultPath = pathFinder.GetShortestPath(graph, source, target);
-                    return Program.ResultGenerate(resultPath, graph);
+                    var (graph, source, target) = DataParser.GetInputData(reader.ReadLine);
+                    var resultPath = DijkstraPathFinder.GetShortestPath(graph, source, target);
+                    return DataParser.ResultGenerate(resultPath, graph);
                 }
             }
         }
